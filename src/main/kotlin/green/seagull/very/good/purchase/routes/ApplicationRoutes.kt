@@ -25,11 +25,11 @@ class ApplicationRoutes : RouteBuilder() {
             .get("/").description("List of all purchases")
                 .outType(Array<PurchaseDto>::class.java)
                         .responseMessage().code(200).message("All purchases").endResponseMessage()
-                    .to("bean:temporaryPurchaseService?method=findAll")
+                    .to("bean:purchaseCsvService?method=findAll")
 
             .put().description("Updates or create a purchase").type(PurchaseDto::class.java)
                 .param().name("body").type(RestParamType.body).description("The purchase to update or create").endParam()
                 .responseMessage().code(200).message("Purchase created or updated").endResponseMessage()
-                .to("bean:temporaryPurchaseService?method=updatePurchase")
+                .to("bean:purchaseCsvService?method=updatePurchase")
     }
 }
