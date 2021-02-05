@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<kotlin.version>1.4.30</kotlin.version>
+		<camel.version>3.7.1</camel.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -29,13 +30,49 @@
 		<dependency>
 			<groupId>org.apache.camel.springboot</groupId>
 			<artifactId>camel-spring-boot-starter</artifactId>
-			<version>3.7.1</version>
+			<version>${camel.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Camel -->
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-servlet-starter</artifactId>
+			<version>${camel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-jackson-starter</artifactId>
+			<version>${camel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-swagger-java-starter</artifactId>
+			<version>${camel.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-validator</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel.springboot</groupId>
+			<artifactId>camel-jpa-starter</artifactId>
+			<version>${camel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test-spring-junit5</artifactId>
+			<version>${camel.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- kotlin -->
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
