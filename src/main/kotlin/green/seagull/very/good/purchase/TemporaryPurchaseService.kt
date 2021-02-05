@@ -6,4 +6,9 @@ import org.springframework.stereotype.Service
 @Service
 class TemporaryPurchaseService(var purchases: List<PurchaseDto> = emptyList()) {
     fun findAll() = purchases
+
+    fun updatePurchase(purchaseDto: PurchaseDto): PurchaseDto {
+        purchases = listOf(purchaseDto)
+        return purchaseDto
+    }
 }

@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import java.math.BigDecimal
 
@@ -29,13 +32,13 @@ class ApplicationRoutesTest {
     private lateinit var purchaseService: TemporaryPurchaseService
 
     @Test
-    fun `GET api-doc`() {
+    fun `should have an api-doc`() {
         val response = restTemplate.getForEntity("http://localhost:$port/api/api-doc", String::class.java)
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
     }
 
     @Test
-    fun `GET from api purchases`() {
+    fun `should get all purchases`() {
         purchaseService.purchases = listOf(
                 PurchaseDto("2021-01-17", BigDecimal("5.55"), "Fool's Assassin", "Book"))
 
@@ -49,6 +52,31 @@ class ApplicationRoutesTest {
             assertThat(title).isEqualTo("Fool's Assassin")
             assertThat(purchaseType).isEqualTo("Book")
             assertThat(date).isEqualTo("2021-01-17")
+        }
+    }
+
+    @Test
+    fun `should create a purchase`() {
+        val payload = """{
+				"date": "2021-01-31",
+				"amountDollars": "10.0",
+				"title": "Water Efficient Plants", 
+				"purchaseType": "Book"
+			}
+		""".trimIndent()
+
+        val headers = HttpHeaders()
+        headers.contentType = MediaType.APPLICATION_JSON
+        restTemplate.put(
+                "http://localhost:$port/api/purchases", HttpEntity<String>(payload, headers),
+                String::class.java)
+
+        assertThat(purchaseService.purchases).hasSize(1)
+        with (purchaseService.purchases.first()) {
+            assertThat(title).isEqualTo("Water Efficient Plants")
+            assertThat(amountDollars).isEqualByComparingTo(BigDecimal("10.0"))
+            assertThat(purchaseType).isEqualTo("Book")
+            assertThat(date).isEqualTo("2021-01-31")
         }
     }
 }
