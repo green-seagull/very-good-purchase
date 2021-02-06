@@ -12,7 +12,7 @@ import java.nio.file.Paths
 
 
 @Service
-class PurchaseCsvService(@Value("\${csv.file.path:/tmp/purchases.csv}") var csvFile: String) {
+class PurchaseCsvService(@Value("\${csv.file.path}") var csvFile: String) {
 
     fun findAll(): List<PurchaseDto> {
         Files.newBufferedReader(Paths.get(csvFile)).use { reader ->
