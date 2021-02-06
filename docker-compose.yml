@@ -1,0 +1,11 @@
+version: "3"
+services:
+  vgp:
+    image: very-good-purchase
+    ports:
+      - 9000:8080
+    volumes:
+      - very-good-purchase-storage:/data
+
+volumes:
+  very-good-purchase-storage:

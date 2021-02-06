@@ -8,4 +8,4 @@ camel:
       mapping:
         contextPath: /api/*
 
-csv.file.path: ${user.home}/purchases.csv
+csv.file.path: /data/purchases.csv

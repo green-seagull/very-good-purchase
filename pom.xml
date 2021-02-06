@@ -143,6 +143,28 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>2.7.1</version>
+                <configuration>
+                    <to>
+                        <image>very-good-purchase</image>
+                    </to>
+                    <from>
+                        <image>arm32v7/openjdk:11-jdk-stretch</image>
+                    </from>
+                    <container>
+                        <ports>
+                            <port>8080</port>
+                        </ports>
+						<jvmFlags>
+							<jvmFlag>-Dspring.profiles.active=prod</jvmFlag>
+						</jvmFlags>
+                    </container>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
