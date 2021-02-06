@@ -32,13 +32,7 @@ internal class PurchaseCsvServiceTest {
     fun `store purchase as in csv file`() {
         purchaseCsvService.updatePurchase(somePurchaseDto())
 
-        assertThat(purchaseCsvService.findAll()).hasSize(1)
-        with (purchaseCsvService.findAll().first()) {
-            assertThat(date).isEqualTo(DATE)
-            assertThat(amountDollars).isEqualTo(AMOUNT)
-            assertThat(title).isEqualTo(TITLE)
-            assertThat(purchaseType).isEqualTo(PURCHASE_TYPE)
-        }
+        assertThatPurchaseExists()
     }
 
     @Test
@@ -48,6 +42,24 @@ internal class PurchaseCsvServiceTest {
 
         assertThat(purchaseCsvService.findAll()).hasSize(2)
         assertThat(purchaseCsvService.findAll().map { it.title }).containsExactly(TITLE, "Words of Radiance")
+    }
+
+    @Test
+    fun `store purchase as in csv file once, ignoring duplicates`() {
+        purchaseCsvService.updatePurchase(somePurchaseDto())
+        purchaseCsvService.updatePurchase(somePurchaseDto())
+
+        assertThatPurchaseExists()
+    }
+
+    private fun assertThatPurchaseExists() {
+        assertThat(purchaseCsvService.findAll()).hasSize(1)
+        with(purchaseCsvService.findAll().first()) {
+            assertThat(date).isEqualTo(DATE)
+            assertThat(amountDollars).isEqualTo(AMOUNT)
+            assertThat(title).isEqualTo(TITLE)
+            assertThat(purchaseType).isEqualTo(PURCHASE_TYPE)
+        }
     }
 
     private fun somePurchaseDto(date: String = DATE,

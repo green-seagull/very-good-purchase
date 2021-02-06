@@ -14,10 +14,15 @@ import java.nio.file.StandardOpenOption
 
 
 @Service
-class PurchaseCsvService(@Value("\${csv.file.path}") var csvFile: String) {
+class PurchaseCsvService(@Value("\${csv.file.path}") val csvFile: String) {
+
+    private val csvFilePath = Paths.get(csvFile)
 
     fun findAll(): List<PurchaseDto> {
-        Files.newBufferedReader(Paths.get(csvFile)).use { reader ->
+        if (Files.notExists(csvFilePath))
+            return emptyList()
+
+        Files.newBufferedReader(csvFilePath).use { reader ->
             CSVParser(reader, CSVFormat.DEFAULT
                     .withFirstRecordAsHeader()
                     .withIgnoreHeaderCase()
@@ -38,12 +43,13 @@ class PurchaseCsvService(@Value("\${csv.file.path}") var csvFile: String) {
     }
 
     fun updatePurchase(purchaseDto: PurchaseDto): PurchaseDto {
-        val csvPath = Paths.get(csvFile)
+        if (findAll().contains(purchaseDto))
+            return purchaseDto
 
-        val csvFileExists = Files.exists(csvPath)
+        val csvFileExists = Files.exists(csvFilePath)
 
         Files.newBufferedWriter(
-            csvPath,
+            csvFilePath,
             StandardOpenOption.APPEND,
             StandardOpenOption.CREATE).use { writer ->
 
