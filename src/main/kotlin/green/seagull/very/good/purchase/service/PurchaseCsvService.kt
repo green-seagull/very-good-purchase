@@ -6,9 +6,11 @@ import org.apache.commons.csv.CSVParser
 import org.apache.commons.csv.CSVPrinter
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import java.io.BufferedWriter
 import java.math.BigDecimal
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.nio.file.StandardOpenOption
 
 
 @Service
@@ -36,15 +38,32 @@ class PurchaseCsvService(@Value("\${csv.file.path}") var csvFile: String) {
     }
 
     fun updatePurchase(purchaseDto: PurchaseDto): PurchaseDto {
-        Files.newBufferedWriter(Paths.get(csvFile)).use { writer ->
-            CSVPrinter(writer, CSVFormat.DEFAULT
-                    .withHeader("date", "title", "purchaseType", "amountDollars")).use { csvPrinter ->
-                with (purchaseDto) {
-                    csvPrinter.printRecord(date, title, purchaseType, amountDollars.toPlainString())
+        val csvPath = Paths.get(csvFile)
+
+        val csvFileExists = Files.exists(csvPath)
+
+        Files.newBufferedWriter(
+            csvPath,
+            StandardOpenOption.APPEND,
+            StandardOpenOption.CREATE).use { writer ->
+
+            csvPrinter(csvFileExists, writer).use { csv ->
+                with(purchaseDto) {
+                    csv.printRecord(date, title, purchaseType, amountDollars.toPlainString())
                 }
-                csvPrinter.flush()
+                csv.flush()
             }
         }
         return purchaseDto
+    }
+
+    private fun csvPrinter(
+        csvFileExists: Boolean,
+        writer: BufferedWriter
+    ): CSVPrinter {
+        return if (csvFileExists)
+            CSVPrinter(writer, CSVFormat.DEFAULT.withFirstRecordAsHeader())
+        else
+            CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("date", "title", "purchaseType", "amountDollars"))
     }
 }
