@@ -1,14 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import TextField from '@material-ui/core/TextField';
+import NavBar from './components/NavBar';
+import FormControl from '@material-ui/core/FormControl'
+import './index.css'
+import { Button, Container, CssBaseline, MenuItem, Select } from '@material-ui/core';
 
 class PurchaseForm extends React.Component {
     constructor(props) {
         super(props);
+
+        const randomTitle = Math.random().toString(36).substring(7);
+        const randomAmount = Math.floor(Math.random() * 150);
+
         this.state = {
-            date: '2020-12-27',
-            amountDollars: 30,
-            title: '',
-            purchaseType: 'ps4',
+            date: new Date().toISOString().slice(0,10),
+            amountDollars: randomAmount,
+            title: randomTitle,
+            purchaseType: 'book',
             //Optional tags: [rebuy, expansion, bored, sale, planned]
         };
 
@@ -20,21 +29,20 @@ class PurchaseForm extends React.Component {
         return (
             <form onSubmit={this.handleSubmit}>
                 <div>
-                    <label>Name: <input type="text" name="date" autoFocus value={this.state.date} onChange={this.handleChange} /></label>
-                    <label>Title: <input type="text" name="title" autoFocus value={this.state.title} onChange={this.handleChange} /></label>
-                    <label>Amount: <input type="text" name="amountDollars" value={this.state.amountDollars} onChange={this.handleChange} /></label>
-                    <label>Type:
-                        <select name="purchaseType" value={this.state.value} onChange={this.handleChange}>
-                            <option value="book">book</option>
-                            <option value="ps4">ps4</option>
-                            <option value="switch">switch</option>
-                            <option value="steam">steam</option>
-                            <option value="PC">PC</option>
-                            <option value="tool">tool</option>
-                        </select>
-                    </label>
+                    <TextField id="date" label="date" name="date" autoFocus value={this.state.date} onChange={this.handleChange} ></TextField>
+                    <TextField id="title" label="Title" name="title" value={this.state.title} onChange={this.handleChange}></TextField>                    
+                    <TextField id="amountDollars" label="Amount" name="amountDollars" value={this.state.amountDollars} onChange={this.handleChange}></TextField>
+                    {/* <InputLabel>Type</InputLabel> */}
+                    <Select label="Type" name="purchaseType" value={this.state.purchaseType} onChange={this.handleChange}>
+                        <MenuItem value="book">book</MenuItem>
+                        <MenuItem value="ps4">ps4</MenuItem>
+                        <MenuItem value="switch">switch</MenuItem>
+                        <MenuItem value="steam">steam</MenuItem>
+                        <MenuItem value="PC">PC</MenuItem>
+                        <MenuItem value="tool">tool</MenuItem>
+                    </Select>
                 </div>
-                <input type="submit" value="Submit" />
+                <Button variant="contained" color="primary" type="submit">Save</Button>
             </form>
         );
     }
@@ -69,7 +77,11 @@ export function apiDomain() {
 
 ReactDOM.render(
     <div>
-        <PurchaseForm />
+        <NavBar/>
+        <CssBaseline/>
+        <Container>
+            <PurchaseForm />
+        </Container>
     </div>,
     document.getElementById('root')
 );
