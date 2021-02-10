@@ -1,6 +1,6 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import { Button, MenuItem, Select } from '@material-ui/core';
+import { Button, MenuItem, Select, Card } from '@material-ui/core';
 
 class PurchaseForm extends React.Component {
     constructor(props) {
@@ -23,23 +23,25 @@ class PurchaseForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <div>
-                    <TextField id="date" label="date" name="date" autoFocus value={this.state.date} onChange={this.handleChange} ></TextField>
-                    <TextField id="title" label="Title" name="title" value={this.state.title} onChange={this.handleChange}></TextField>                    
-                    <TextField id="amountDollars" label="Amount" name="amountDollars" value={this.state.amountDollars} onChange={this.handleChange}></TextField>
-                    {/* <InputLabel>Type</InputLabel> */}
-                    <Select label="Type" name="purchaseType" value={this.state.purchaseType} onChange={this.handleChange}>
-                        <MenuItem value="book">book</MenuItem>
-                        <MenuItem value="ps4">ps4</MenuItem>
-                        <MenuItem value="switch">switch</MenuItem>
-                        <MenuItem value="steam">steam</MenuItem>
-                        <MenuItem value="PC">PC</MenuItem>
-                        <MenuItem value="tool">tool</MenuItem>
-                    </Select>
-                </div>
-                <Button variant="contained" color="primary" type="submit">Save</Button>
-            </form>
+            <Card id="purchaseForm">
+                <form onSubmit={this.handleSubmit}>
+                    <div>
+                        <TextField id="date" label="date" name="date" autoFocus value={this.state.date} onChange={this.handleChange} ></TextField>
+                        <TextField id="title" label="Title" name="title" value={this.state.title} onChange={this.handleChange}></TextField>                    
+                        <TextField id="amountDollars" label="Amount" name="amountDollars" value={this.state.amountDollars} onChange={this.handleChange}></TextField>
+                        
+                        <Select label="Type" name="purchaseType" value={this.state.purchaseType} onChange={this.handleChange}>
+                            <MenuItem value="book">book</MenuItem>
+                            <MenuItem value="ps4">ps4</MenuItem>
+                            <MenuItem value="switch">switch</MenuItem>
+                            <MenuItem value="steam">steam</MenuItem>
+                            <MenuItem value="PC">PC</MenuItem>
+                            <MenuItem value="tool">tool</MenuItem>
+                        </Select>
+                    </div>
+                    <Button variant="contained" color="primary" type="submit">Save</Button>
+                </form>
+            </Card>
         );
     }
 
