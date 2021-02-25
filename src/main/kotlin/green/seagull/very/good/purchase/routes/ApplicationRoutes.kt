@@ -20,6 +20,7 @@ class ApplicationRoutes : RouteBuilder() {
                     .apiProperty("cors", "true")
 
         rest("/purchases").description("Purchases REST service")
+            .enableCORS(true)
             .consumes("application/json").produces("application/json")
 
             .get("/").description("List of all purchases")
