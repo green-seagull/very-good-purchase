@@ -5,7 +5,7 @@ services:
     ports:
       - 9000:8080
     volumes:
-      - ./data:/data
+      - very-good-purchase-storage:/data
 
 volumes:
   very-good-purchase-storage:
