@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
+docker-compose down
 (cd ui && npm install && npm run build)
-mvn install
-mvn compile com.google.cloud.tools:jib-maven-plugin:dockerBuild
+mvn clean install com.google.cloud.tools:jib-maven-plugin:dockerBuild
