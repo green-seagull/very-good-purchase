@@ -172,7 +172,7 @@
 				<executions>
 					<execution>
 						<id>copy-react-build-files</id>
-						<phase>install</phase>
+						<phase>compile</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
