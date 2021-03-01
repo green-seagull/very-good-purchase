@@ -11,7 +11,7 @@ class PurchaseForm extends React.Component {
         const randomTitle = Math.random().toString(36).substring(7);
         const randomAmount = Math.floor(Math.random() * 150);
 
-        const amount = production ?  "" : randomAmount;
+        const amount = production ? "" : randomAmount;
         const title = production ? "" : randomTitle;
 
         this.state = {
@@ -71,6 +71,8 @@ class PurchaseForm extends React.Component {
     }
 
     handleSubmit(event) {
+        event.preventDefault();
+
         const json = JSON.stringify(this.state);
 
         fetch(`${apiDomain()}/api/purchases`, {
@@ -79,6 +81,9 @@ class PurchaseForm extends React.Component {
             headers: { 'Content-Type': 'application/json' },
         }).then(function (response) {
             console.log(response);
+        }).catch(function(error) {
+            console.log(error);
+            alert('Failed to submit: ' + error);
         });
     }
 }
