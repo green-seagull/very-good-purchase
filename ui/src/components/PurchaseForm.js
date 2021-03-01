@@ -7,14 +7,18 @@ class PurchaseForm extends React.Component {
     constructor(props) {
         super(props);
 
+        const production = process.env.NODE_ENV === 'production';
         const randomTitle = Math.random().toString(36).substring(7);
         const randomAmount = Math.floor(Math.random() * 150);
 
+        const amount = production ? "" : randomAmount;
+        const title = production ? "" : randomTitle;
+
         this.state = {
             date: new Date().toISOString().slice(0, 10),
-            amountDollars: randomAmount,
-            title: randomTitle,
-            purchaseType: 'book',
+            amountDollars: amount,
+            title: title,
+            purchaseType: 'ps4',
             //Optional tags: [rebuy, expansion, bored, sale, planned]
         };
 
@@ -44,6 +48,7 @@ class PurchaseForm extends React.Component {
                                 <MenuItem value="steam">steam</MenuItem>
                                 <MenuItem value="PC">PC</MenuItem>
                                 <MenuItem value="tool">tool</MenuItem>
+                                <MenuItem value="collection">collection</MenuItem>
                             </Select>
                         </Grid>
                         <Grid item>
@@ -66,6 +71,8 @@ class PurchaseForm extends React.Component {
     }
 
     handleSubmit(event) {
+        event.preventDefault();
+
         const json = JSON.stringify(this.state);
 
         fetch(`${apiDomain()}/api/purchases`, {
@@ -74,6 +81,9 @@ class PurchaseForm extends React.Component {
             headers: { 'Content-Type': 'application/json' },
         }).then(function (response) {
             console.log(response);
+        }).catch(function(error) {
+            console.log(error);
+            alert('Failed to submit: ' + error);
         });
     }
 }
